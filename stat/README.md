@@ -1,0 +1,1 @@
+That folder consist static about users requests.

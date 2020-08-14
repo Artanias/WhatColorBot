@@ -7,7 +7,7 @@ import os
 import json
 
 #individual bot token
-token = ""
+token = "1022950277:AAFBiB615c0tExyam8Z6ILuH77MfdoB6avQ"
 
 dir = os.path.abspath(os.curdir)
 
@@ -23,8 +23,8 @@ def makePNG(init1):
 
 
     if len(init1) == 7 and init1[0]=="#":
-        for i in range(1, 6):
-            if (init1[i] != "0" and str(init1[i]) != "1" and str(init1[i]) != "2" and str(init1[i]) != "3" and str(init1[i]) != "4" and str(init1[i]) != "5" and str(init1[i]) != "6" and str(init1[i]) != "7" and str(init1[i]) != "8" and str(init1[i]) != "9" and str(init1[i]) != "A" and str(init1[i]) != "a" and str(init1[i]) != "B" and str(init1[i]) != "b" and str(init1[i]) != "C" and str(init1[i]) != "c" and str(init1[i]) != "D" and str(init1[i]) != "d" and str(init1[i]) != "E" and str(init1[i]) != "e" and str(init1[i]) != "F" and str(init1[i]) != "f"):
+        for i in range(1, 7):
+            if init1[i] not in '0123456789ABCDEFabcdef':
                 print(init1[i])
                 return 0 
 
@@ -40,8 +40,8 @@ def makePNG(init1):
         print(code_b)
     else:
         if len(init1) == 6:
-            for i in range(0, 5):
-                if (init1[i] != "0" and str(init1[i]) != "1" and str(init1[i]) != "2" and str(init1[i]) != "3" and str(init1[i]) != "4" and str(init1[i]) != "5" and str(init1[i]) != "6" and str(init1[i]) != "7" and str(init1[i]) != "8" and str(init1[i]) != "9" and str(init1[i]) != "A" and str(init1[i]) != "a" and str(init1[i]) != "B" and str(init1[i]) != "b" and str(init1[i]) != "C" and str(init1[i]) != "c" and str(init1[i]) != "D" and str(init1[i]) != "d" and str(init1[i]) != "E" and str(init1[i]) != "e" and str(init1[i]) != "F" and str(init1[i]) != "f"):
+            for i in range(6):
+                if init1[i] not in '0123456789ABCDEFabcdef':
                     print(init1[i])
                     return 0 
 
@@ -59,8 +59,8 @@ def makePNG(init1):
     color = (code_r, code_g, code_b)
     img = Image.new('RGB', (200, 200), color)
     imgDrawer = ImageDraw.Draw(img)
-    img.save(init_r+init_g+init_b+".png")
-    return init_r+init_g+init_b+".png"
+    img.save(init_r + init_g + init_b + ".png")
+    return init_r + init_g + init_b + ".png"
 
 def convert_base(num, to_base=10, from_base=16):
     if isinstance(num, str):
@@ -80,7 +80,7 @@ def handle_text(message):
 
 @bot.message_handler(commands=['clean'])
 def handle_text(message):
-    file = open('statistick.json', 'w')
+    file = open('stat/statistick' + str(message.chat.id) + '.json', 'w')
     json.dump({}, file)
     file.close()
     bot.send_message(message.chat.id, "Ура! благодаря тебе мой кэш наконец-то чист! Спасибо : )")
@@ -98,9 +98,16 @@ def handle_text(message):
                 os.remove(filename)
                 print(filename+" is deleted\n") 
         
-        file = open('statistick.json', 'r')
-        data = json.load(file)
-        file.close()
+        try:
+            file = open('stat/statistick' + str(message.chat.id) + '.json', 'r')
+        except FileNotFoundError:
+            file = open('stat/statistick' + str(message.chat.id) + '.json', 'w')
+            json.dump({}, file)
+            file.close()
+            file = open('stat/statistick' + str(message.chat.id) + '.json', 'r')
+        finally:
+            data = json.load(file)
+            file.close()
 
         text = message.text.lower()
         if '#' in text:
@@ -110,7 +117,7 @@ def handle_text(message):
         else:
             data[text] = 1
         
-        file = open('statistick.json', 'w')
+        file = open('stat/statistick' + str(message.chat.id) + '.json', 'w')
         json.dump(data, file)
         file.close()
     else:
@@ -118,27 +125,27 @@ def handle_text(message):
 
 
 #need to finish
-@bot.inline_handler(lambda query: len(query.query) is not 0)
+@bot.inline_handler(lambda query: len(query.query) != 0)
 def query_text(inline_query):
     ok=0
     q = inline_query.query
     super_query = q.upper()
     print(super_query)
     if(len(super_query)==7 and super_query[0]=='#'):
-        for i in range(1, 6):
-            if (super_query[i] != "0" and str(super_query[i]) != "1" and str(super_query[i]) != "2" and str(super_query[i]) != "3" and str(super_query[i]) != "4" and str(super_query[i]) != "5" and str(super_query[i]) != "6" and str(super_query[i]) != "7" and str(super_query[i]) != "8" and str(super_query[i]) != "9" and str(super_query[i]) != "A" and str(super_query[i]) != "a" and str(super_query[i]) != "B" and str(super_query[i]) != "b" and str(super_query[i]) != "C" and str(super_query[i]) != "c" and str(super_query[i]) != "D" and str(super_query[i]) != "d" and str(super_query[i]) != "E" and str(super_query[i]) != "e" and str(super_query[i]) != "F" and str(super_query[i]) != "f"):
+        for i in range(1, 7):
+            if super_query[i] not in '0123456789ABCDEFabcdef':
                 print("Invalid code.")
                 continue
             else:
                 ok=1
     if(len(super_query)==6):
-        for i in range(0, 5):
-            if (super_query[i] != "0" and str(super_query[i]) != "1" and str(super_query[i]) != "2" and str(super_query[i]) != "3" and str(super_query[i]) != "4" and str(super_query[i]) != "5" and str(super_query[i]) != "6" and str(super_query[i]) != "7" and str(super_query[i]) != "8" and str(super_query[i]) != "9" and str(super_query[i]) != "A" and str(super_query[i]) != "a" and str(super_query[i]) != "B" and str(super_query[i]) != "b" and str(super_query[i]) != "C" and str(super_query[i]) != "c" and str(super_query[i]) != "D" and str(super_query[i]) != "d" and str(super_query[i]) != "E" and str(super_query[i]) != "e" and str(super_query[i]) != "F" and str(super_query[i]) != "f"):
+        for i in range(0, 6):
+            if super_query[i] not in '0123456789ABCDEFabcdef':
                 print("Invalid code.")
                 continue
             else:
                 ok=1
-    if(ok==1):         
+    if(ok == 1):         
         try:
             #hen picture
             pic = types.InlineQueryResultPhoto('1', 'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg', 'https://raw.githubusercontent.com/eternnoir/pyTelegramBotAPI/master/examples/detailed_example/rooster.jpg')
